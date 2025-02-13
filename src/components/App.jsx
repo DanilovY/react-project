@@ -155,7 +155,7 @@
 //   );
 // };
 
-import { useState, useEffect } from 'react';
+// import { useState, useEffect } from 'react';
 
 // export const App = () => {
 //   const [clicks, setClicks] = useState(0);
@@ -324,25 +324,252 @@ import { useState, useEffect } from 'react';
 //   );
 // };
 
-export const App = () => {
-  const [clicks, setClicks] = useState(() => {
-    const savedClicks = window.localStorage.getItem('saved-clicks');
-    if (savedClicks !== null) {
-      return Number(savedClicks);
-    }
-    return 0;
-  });
+// export const App = () => {
+//   const [clicks, setClicks] = useState(() => {
+//     const savedClicks = window.localStorage.getItem('saved-clicks');
+//     if (savedClicks !== null) {
+//       return Number(savedClicks);
+//     }
+//     return 0;
+//   });
 
-  useEffect(() => {
-    window.localStorage.setItem('saved-clicks', clicks);
-  }, [clicks]);
+//   useEffect(() => {
+//     window.localStorage.setItem('saved-clicks', clicks);
+//   }, [clicks]);
+
+//   return (
+//     <div>
+//       <button onClick={() => setClicks(clicks + 1)}>
+//         You clicked {clicks} times
+//       </button>
+//       <button onClick={() => setClicks(0)}>Reset </button>
+//     </div>
+//   );
+// };
+
+// export const App = () => {
+//   const handleSubmit = evt => {
+//     evt.preventDefault();
+//     console.log(evt);
+//   };
+
+//   return (
+//     <form onSubmit={handleSubmit}>
+//       <input type="text" name="login" />
+//       <input type="password" name="password" />
+//       <button type="submit">Login</button>
+//     </form>
+//   );
+// };
+
+// const LoginForm = ({ onLogin }) => {
+//   const handleSubmit = evt => {
+//     evt.preventDefault();
+
+//     const form = evt.target;
+//     const { login, password } = form.elements;
+
+//     // Посилання на DOM-елементи
+//     console.log(login, password);
+
+//     // Вызываем пропс onLogin
+//     onLogin({
+//       login: login.value,
+//       password: password.value,
+//     });
+
+//     // Значення полів
+//     console.log(login.value, password.value);
+
+//     // Скидаємо значення полів після відправки
+//     form.reset();
+//   };
+
+//   return (
+//     <form onSubmit={handleSubmit}>
+//       <input type="text" name="login" />
+//       <input type="password" name="password" />
+//       <button type="submit">Login</button>
+//     </form>
+//   );
+// };
+// export const App = () => {
+//   // Колбек-функція для обробки сабміту форми
+//   const handleLogin = userData => {
+//     // Виконуємо необхідні операції з даними
+//     console.log(userData);
+//   };
+
+//   return (
+//     <div>
+//       <h1>Please login to your account!</h1>
+//       {/* Передаємо колбек як пропс форми */}
+//       <LoginForm onLogin={handleLogin} />
+//     </div>
+//   );
+// };
+// import { useState } from 'react';
+
+// export const App = () => {
+//   const [inputValue, setInputValue] = useState('');
+
+//   const handleChange = evt => {
+//     setInputValue(evt.target.value);
+//   };
+
+//   return (
+//     <div>
+//       <input type="text" value={inputValue} onChange={handleChange} />
+//       <p>{inputValue}</p>
+//     </div>
+//   );
+// };
+
+// const LangSwitcher = ({ value, onSelect }) => {
+//   const selectId = useId();
+
+//   return (
+//     <div>
+//       <label htmlFor={selectId}>Choose language</label>
+//       <select
+//         id={selectId}
+//         value={value}
+//         onChange={evt => onSelect(console.log(evt.target.value))}
+//       >
+//         <option value="uk">Ukrainian</option>
+//         <option value="en">English</option>
+//         <option value="pl">Polish</option>
+//       </select>
+//     </div>
+//   );
+// };
+
+// export const App = () => {
+//   const [lang, setLang] = useState('uk');
+
+//   return (
+//     <>
+//       <p>Selected language: {lang}</p>
+//       <LangSwitcher value={lang} onSelect={setLang} />
+//     </>
+//   );
+// };
+
+// export const App = () => {
+//   const [values, setValues] = useState({
+//     login: '',
+//     password: '',
+//   });
+
+//   const handleChange = evt => {
+//     setValues({
+//       ...values,
+//       [evt.target.name]: evt.target.value,
+//     });
+//   };
+
+//   const handleSumit = evt => {
+//     evt.preventDefault();
+
+//     console.log(values);
+
+//     setValues({
+//       login: '',
+//       password: '',
+//     });
+//   };
+
+//   return (
+//     <form onSubmit={handleSumit}>
+//       <input
+//         type="text"
+//         name="login"
+//         value={values.login}
+//         onChange={handleChange}
+//       />
+//       <input
+//         type="password"
+//         name="password"
+//         value={values.password}
+//         onChange={handleChange}
+//       />
+//       <button type="submit">Login</button>
+//     </form>
+//   );
+// };
+import { useId } from 'react';
+import { Formik, Form, Field } from 'formik';
+import * as Yup from 'yup';
+import { ErrorMessage } from 'formik';
+
+const FeedbackSchema = Yup.object().shape({
+  username: Yup.string()
+    .min(2, 'Too Short!')
+    .max(50, 'Too Long!')
+    .required('Required'),
+  email: Yup.string().email('Must be a valid email!').required('Required'),
+  message: Yup.string()
+    .min(3, 'Too short')
+    .max(256, 'Too long')
+    .required('Required'),
+  level: Yup.string().oneOf(['good', 'neutral', 'bad']).required('Required'),
+});
+
+const initialValues = {
+  username: '',
+  email: '',
+  message: '',
+  level: 'good',
+};
+
+export const App = () => {
+  const nameFieldId = useId();
+  const emailFieldId = useId();
+  const msgFieldId = useId();
+  const levelFieldId = useId();
+
+  const handleSubmit = (values, actions) => {
+    console.log(values);
+    actions.resetForm();
+  };
 
   return (
-    <div>
-      <button onClick={() => setClicks(clicks + 1)}>
-        You clicked {clicks} times
-      </button>
-      <button onClick={() => setClicks(0)}>Reset </button>
-    </div>
+    <Formik
+      initialValues={initialValues}
+      onSubmit={handleSubmit}
+      validationSchema={FeedbackSchema}
+    >
+      <Form>
+        <div>
+          <label htmlFor={nameFieldId}>Username</label>
+          <Field type="text" name="username" id={nameFieldId} />
+          <ErrorMessage name="username" component="span" />
+        </div>
+
+        <div>
+          <label htmlFor={emailFieldId}>Email</label>
+          <Field type="email" name="email" id={emailFieldId} />
+          <ErrorMessage name="email" component="span" />
+        </div>
+
+        <div>
+          <label htmlFor={msgFieldId}>Message</label>
+          <Field as="textarea" name="message" id={msgFieldId} rows="5" />
+          <ErrorMessage name="message" component="span" />
+        </div>
+
+        <div>
+          <label htmlFor={levelFieldId}>Service satisfaction level</label>
+          <Field as="select" name="level" id={levelFieldId}>
+            <option value="good">Good</option>
+            <option value="neutral">Neutral</option>
+            <option value="bad">Bad</option>
+          </Field>
+          <ErrorMessage name="level" component="span" />
+        </div>
+
+        <button type="submit">Submit</button>
+      </Form>
+    </Formik>
   );
 };
