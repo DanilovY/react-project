@@ -497,79 +497,286 @@
 //     </form>
 //   );
 // };
-import { useId } from 'react';
-import { Formik, Form, Field } from 'formik';
-import * as Yup from 'yup';
-import { ErrorMessage } from 'formik';
 
-const FeedbackSchema = Yup.object().shape({
-  username: Yup.string()
-    .min(2, 'Too Short!')
-    .max(50, 'Too Long!')
-    .required('Required'),
-  email: Yup.string().email('Must be a valid email!').required('Required'),
-  message: Yup.string()
-    .min(3, 'Too short')
-    .max(256, 'Too long')
-    .required('Required'),
-  level: Yup.string().oneOf(['good', 'neutral', 'bad']).required('Required'),
-});
+//---------------------------------------VSPOMNI----------------------------------//
+// import { useId } from 'react';
+// import { Formik, Form, Field } from 'formik';
+// import * as Yup from 'yup';
+// import { ErrorMessage } from 'formik';
 
-const initialValues = {
-  username: '',
-  email: '',
-  message: '',
-  level: 'good',
-};
+// const FeedbackSchema = Yup.object().shape({
+//   username: Yup.string()
+//     .min(2, 'Too Short!')
+//     .max(50, 'Too Long!')
+//     .required('Required'),
+//   email: Yup.string().email('Must be a valid email!').required('Required'),
+//   message: Yup.string()
+//     .min(3, 'Too short')
+//     .max(256, 'Too long')
+//     .required('Required'),
+//   level: Yup.string().oneOf(['good', 'neutral', 'bad']).required('Required'),
+// });
+
+// const initialValues = {
+//   username: '',
+//   email: '',
+//   message: '',
+//   level: 'good',
+// };
+
+// export const App = () => {
+//   const nameFieldId = useId();
+//   const emailFieldId = useId();
+//   const msgFieldId = useId();
+//   const levelFieldId = useId();
+
+//   const handleSubmit = (values, actions) => {
+//     console.log(values);
+//     actions.resetForm();
+//   };
+
+//   return (
+//     <Formik
+//       initialValues={initialValues}
+//       onSubmit={handleSubmit}
+//       validationSchema={FeedbackSchema}
+//     >
+//       <Form>
+//         <div>
+//           <label htmlFor={nameFieldId}>Username</label>
+//           <Field type="text" name="username" id={nameFieldId} />
+//           <ErrorMessage name="username" component="span" />
+//         </div>
+
+//         <div>
+//           <label htmlFor={emailFieldId}>Email</label>
+//           <Field type="email" name="email" id={emailFieldId} />
+//           <ErrorMessage name="email" component="span" />
+//         </div>
+
+//         <div>
+//           <label htmlFor={msgFieldId}>Message</label>
+//           <Field as="textarea" name="message" id={msgFieldId} rows="5" />
+//           <ErrorMessage name="message" component="span" />
+//         </div>
+
+//         <div>
+//           <label htmlFor={levelFieldId}>Service satisfaction level</label>
+//           <Field as="select" name="level" id={levelFieldId}>
+//             <option value="good">Good</option>
+//             <option value="neutral">Neutral</option>
+//             <option value="bad">Bad</option>
+//           </Field>
+//           <ErrorMessage name="level" component="span" />
+//         </div>
+
+//         <button type="submit">Submit</button>
+//       </Form>
+//     </Formik>
+//   );
+// };
+//______________-___________________________________________________________________///
+
+// import axios from 'axios';
+// import { useEffect, useState } from 'react';
+
+// const ArticlesList = ({ item }) => {
+//   return (
+//     <ul>
+//       {item.map(({ objectID, url, title }) => (
+//         <li key={objectID}>
+//           <a href={url} target="_blank" rel="noreferrer noopener">
+//             {title}
+//           </a>
+//         </li>
+//       ))}
+//     </ul>
+//   );
+// };
+
+// export const App = () => {
+//   // 1. Объявляем состояние
+//   const [articles, setArticles] = useState([]);
+//   const [loading, setLoading] = useState(false);
+//   const [error, setError] = useState(false);
+
+//   useEffect(() => {
+//     async function fetchArticles() {
+//       try {
+//         // 1. Устанавливаем индикатор в true перед запросом
+//         setLoading(true);
+//         const respons = await axios.get(
+//           'https://hn.algolia.com/api/v1/search?query=react'
+//         );
+//         // 2. Записываем данные в состояние
+//         setArticles(respons.data.hits);
+//       } catch (error) {
+//         // Здесь будем обрабатывать ошибку
+//         setError(true);
+//       } finally {
+//         // 2. Устанавливаем индикатор в false после запроса
+//         setLoading(false);
+//       }
+//     }
+//     fetchArticles();
+//   }, []);
+
+//   return (
+//     <div>
+//       <h1> Latest articles </h1>
+//       {loading && <p> Loading data, please wait... </p>}
+//       {error && (
+//         <p>Whoops, something went wrong! Please try reloading this page!</p>
+//       )}
+//       {articles.length > 0 && <ArticlesList item={articles} />}
+//     </div>
+//   );
+// };
+//--------------------------------------------------------------------//
+// import { fetchArticlesWithTopic } from '../articles-api.js';
+// import { useEffect, useState } from 'react';
+// import { SearchForm } from './SearchForm.jsx';
+
+// const ArticlesList = ({ items }) => {
+//   return (
+//     <ul>
+//       {items.map(({ objectID, url, title }) => (
+//         <li key={objectID}>
+//           <a href={url} target="_blank" rel="noreferrer noopener">
+//             {title}
+//           </a>
+//         </li>
+//       ))}
+//     </ul>
+//   );
+// };
+
+// export const App = () => {
+//   const [articles, setArticles] = useState([]);
+//   const [loading, setLoading] = useState(false);
+//   const [error, setError] = useState(false);
+
+//   // useEffect(() => {
+//   //   async function fetchArticles() {
+//   //     try {
+//   //       setLoading(true);
+//   //       setError(false);
+//   //       // 2. Використовуємо HTTP-функцію
+//   //       const data = await fetchArticlesWithTopic('react');
+//   //       setArticles(data);
+//   //     } catch (error) {
+//   //       setError(true);
+//   //     } finally {
+//   //       setLoading(false);
+//   //     }
+//   //   }
+
+//   //   fetchArticles();
+//   // }, []);
+//   const handleSearch = async topic => {
+//     try {
+//       setArticles([]);
+//       setError(false);
+//       setLoading(true);
+//       const data = await fetchArticlesWithTopic(topic);
+//       setArticles(data);
+//     } catch (error) {
+//       setError(true);
+//     } finally {
+//       setLoading(false);
+//     }
+//   };
+
+//   return (
+//     <div>
+//       <SearchForm onSearch={handleSearch} />
+//       {loading && <p>Loading data, please wait...</p>}
+//       {error && (
+//         <p>Whoops, something went wrong! Please try reloading this page!</p>
+//       )}
+//       {articles.length > 0 && <ArticlesList items={articles} />}
+//     </div>
+//   );
+// };
+//------------------------------------------------------------//
+// import { useState, useRef, useEffect } from 'react';
+
+// export const App = () => {
+//   const [value, setValue] = useState(0);
+//   const btnRef = useRef();
+
+//   // Буде undefined на першому рендері
+//   // і посиланням на DOM-елемент всі наступні
+//   console.log('App: ', btnRef.current);
+
+//   useEffect(() => {
+//     // Ефект виконується після монтування,
+//     // тому завжди буде посиланням на DOM-елемент
+//     console.log('useEffect: ', btnRef.current);
+//   });
+
+//   const handleClick = () => {
+//     // Кліки будуть після монтування,
+//     // тому завжди буде посиланням на DOM-елемент
+//     console.log('handleClick: ', btnRef.current);
+//   };
+
+//   return (
+//     <>
+//       <button onClick={() => setValue(value + 1)}>
+//         Update value to trigger re-render
+//       </button>
+//       <button ref={btnRef} onClick={handleClick}>
+//         Button with ref
+//       </button>
+//     </>
+//   );
+// };
+
+// import { useRef, useEffect, useState } from 'react';
+
+// const Player = ({ source }) => {
+//   const playerRef = useRef(); // Реф для видео
+//   const [time, setTime] = useState(0); // Состояние для времени
+
+//   useEffect(() => {
+//     const interval = setInterval(() => {
+//       if (playerRef.current) {
+//         setTime(playerRef.current.currentTime); // Обновляем текущее время
+//       }
+//     }, 1000); // Каждую секунду
+
+//     return () => clearInterval(interval); // Очищаем интервал при размонтировании
+//   }, []);
+
+//   const play = () => playerRef.current.play();
+//   const pause = () => playerRef.current.pause();
+
+//   return (
+//     <div>
+//       <video ref={playerRef} src={source} width="400" controls>
+//         Sorry, your browser does not support embedded videos.
+//       </video>
+//       <p>Текущее время: {time.toFixed(0)} сек.</p> {/* Отображаем время */}
+//       <div>
+//         <button onClick={play}>Play</button>
+//         <button onClick={pause}>Pause</button>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export const App = () => {
+//   return <Player source="http://media.w3.org/2010/05/sintel/trailer.mp4" />;
+// };
+//______________________________________context_________________________________//
+import { UserMenu } from './UserMenu';
 
 export const App = () => {
-  const nameFieldId = useId();
-  const emailFieldId = useId();
-  const msgFieldId = useId();
-  const levelFieldId = useId();
-
-  const handleSubmit = (values, actions) => {
-    console.log(values);
-    actions.resetForm();
-  };
-
   return (
-    <Formik
-      initialValues={initialValues}
-      onSubmit={handleSubmit}
-      validationSchema={FeedbackSchema}
-    >
-      <Form>
-        <div>
-          <label htmlFor={nameFieldId}>Username</label>
-          <Field type="text" name="username" id={nameFieldId} />
-          <ErrorMessage name="username" component="span" />
-        </div>
-
-        <div>
-          <label htmlFor={emailFieldId}>Email</label>
-          <Field type="email" name="email" id={emailFieldId} />
-          <ErrorMessage name="email" component="span" />
-        </div>
-
-        <div>
-          <label htmlFor={msgFieldId}>Message</label>
-          <Field as="textarea" name="message" id={msgFieldId} rows="5" />
-          <ErrorMessage name="message" component="span" />
-        </div>
-
-        <div>
-          <label htmlFor={levelFieldId}>Service satisfaction level</label>
-          <Field as="select" name="level" id={levelFieldId}>
-            <option value="good">Good</option>
-            <option value="neutral">Neutral</option>
-            <option value="bad">Bad</option>
-          </Field>
-          <ErrorMessage name="level" component="span" />
-        </div>
-
-        <button type="submit">Submit</button>
-      </Form>
-    </Formik>
+    <div>
+      <h1> Context example </h1>
+      <UserMenu />
+    </div>
   );
 };
